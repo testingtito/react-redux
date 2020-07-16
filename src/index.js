@@ -1,17 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import rootReducer from './reducers/rootReducer';
+import thunk from 'redux-thunk'
+
+// Create a store + apply the middleware inside this store.
+// applyMiddleware can take in a list of middleware and it turns it into a store enhancer.
+// By applying this thunk middleware, this is now enhancing our store with extra 
+// functionality. And that functionality is how we're going to be able to return a function 
+// inside of our action creators which can then interact with an API.
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
